@@ -51,7 +51,7 @@ public abstract class CommonRadioAdapter<T> extends CommonRecyclerAdapter<T> {
     }
 
     @Override
-    protected void convert(CommonRecyclerHolder holder, int position, T item) {
+    protected void convert(@NonNull CommonRecyclerHolder holder, int position, T item) {
         convert(holder, position, item, checkedItem != null && checkedItem.equals(item));
     }
 

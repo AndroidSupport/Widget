@@ -54,7 +54,7 @@ public abstract class CommonChooseAdapter<T> extends CommonRecyclerAdapter<T> {
     }
 
     @Override
-    protected void convert(CommonRecyclerHolder holder, int position, T item) {
+    protected void convert(@NonNull CommonRecyclerHolder holder, int position, T item) {
         convert(holder, position, item, mCheckedData.contains(item));
     }
 

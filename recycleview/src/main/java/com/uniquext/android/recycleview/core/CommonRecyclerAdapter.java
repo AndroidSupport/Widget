@@ -1,13 +1,14 @@
 package com.uniquext.android.recycleview.core;
 
 import android.content.res.Resources;
-import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -41,14 +42,13 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
     /**
      * 布局文件
      */
-    protected SparseArray<Integer> mItemLayoutId;
+    protected SparseIntArray mItemLayoutId = new SparseIntArray();
     protected OnItemClickListener mOnItemClickListener;
     protected OnItemLongClickListener mOnItemLongClickListener;
     private boolean mItemClickable = true;
 
     public CommonRecyclerAdapter(@NonNull List<T> data, @LayoutRes int... itemLayoutIds) {
         mData = data;
-        mItemLayoutId = new SparseArray<>();
         for (int itemLayoutId : itemLayoutIds) {
             mItemLayoutId.put(itemLayoutId, itemLayoutId);
         }
@@ -84,7 +84,7 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
         return mData == null ? 0 : mData.size();
     }
 
-    protected abstract void convert(CommonRecyclerHolder holder, int position, T item);
+    protected abstract void convert(@NonNull CommonRecyclerHolder holder, int position, @Nullable T item);
 
     public void setItemClickable(boolean itemClickable) {
         this.mItemClickable = itemClickable;
