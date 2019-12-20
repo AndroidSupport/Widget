@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DrawFilter;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.util.AttributeSet;
 
@@ -37,6 +39,7 @@ public class CornerImageView extends AppCompatImageView {
 
     private final Path path = new Path();
     private final Paint paint = new Paint();
+    private final DrawFilter drawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
 
     private boolean circle = false;
     private float[] radii = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -56,7 +59,9 @@ public class CornerImageView extends AppCompatImageView {
     public CornerImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.initStyleable(attrs);
+        this.paint.setAntiAlias(true);
         this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeJoin(Paint.Join.ROUND);
     }
 
     @Override
@@ -68,6 +73,7 @@ public class CornerImageView extends AppCompatImageView {
         }
         canvas.clipPath(path);
         addStroke(canvas);
+        canvas.setDrawFilter(drawFilter);
         super.onDraw(canvas);
     }
 
@@ -110,7 +116,7 @@ public class CornerImageView extends AppCompatImageView {
     private void addStroke(Canvas canvas) {
         if (strokeWidth > 0) {
             paint.setColor(strokeColor);
-            paint.setStrokeWidth(strokeWidth);
+            paint.setStrokeWidth(strokeWidth * 2);
             canvas.drawPath(path, paint);
         }
     }
