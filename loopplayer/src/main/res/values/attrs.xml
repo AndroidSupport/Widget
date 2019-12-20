@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    <declare-styleable name="TextPlayer">-->
+<!--        <attr name="content" format="reference" />-->
+<!--        <attr name="textSize" format="dimension" />-->
+<!--        <attr name="textColor" format="color" />-->
+<!--    </declare-styleable>-->
+
+    <declare-styleable name="TextSwitchView">
+        <attr name="contentArray" format="reference" />
+        <attr name="contentSize" format="dimension" />
+        <attr name="contentColor" format="color" />
+        <attr name="period" format="integer" />
+    </declare-styleable>
+</resources>
