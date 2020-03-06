@@ -5,8 +5,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.uniquext.android.recycleview.core.CommonRecyclerAdapter;
-import com.uniquext.android.recycleview.core.CommonRecyclerHolder;
+import com.uniquext.android.recycleview.core.old.CommonRecyclerAdapter;
+import com.uniquext.android.recycleview.core.old.CommonRecyclerHolder;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public abstract class CommonRecycleLoadAdapter<T> extends CommonRecyclerAdapter<
         this.mOnLoadMoreListener = loadMoreListener;
     }
 
-    public void load(){
+    public void load() {
         mOnLoadMoreListener.onLoadMoreRequested();
     }
 

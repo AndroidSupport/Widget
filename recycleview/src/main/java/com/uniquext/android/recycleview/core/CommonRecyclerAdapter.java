@@ -1,82 +1,37 @@
 package com.uniquext.android.recycleview.core;
 
-import android.content.res.Resources;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-/**
- * 　 　　   へ　　　 　／|
- * 　　    /＼7　　　 ∠＿/
- * 　     /　│　　 ／　／
- * 　    │　Z ＿,＜　／　　   /`ヽ
- * 　    │　　　 　　ヽ　    /　　〉
- * 　     Y　　　　　   `　  /　　/
- * 　    ｲ●　､　●　　⊂⊃〈　　/
- * 　    ()　 へ　　　　|　＼〈
- * 　　    >ｰ ､_　 ィ　 │ ／／      去吧！
- * 　     / へ　　 /　ﾉ＜| ＼＼        比卡丘~
- * 　     ヽ_ﾉ　　(_／　 │／／           消灭代码BUG
- * 　　    7　　　　　　　|／
- * 　　    ＞―r￣￣`ｰ―＿
- * ━━━━━━感觉萌萌哒━━━━━━
- *
- * @author UniqueXT
- * @version 1.0
- * @date 2018/12/7  15:51
- */
-public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<CommonRecyclerHolder> implements View.OnClickListener, View.OnLongClickListener {
-
-    /**
-     * 数据源
-     */
+public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter implements View.OnClickListener, View.OnLongClickListener {
     protected List<T> mData;
-    /**
-     * 布局文件
-     */
-    protected SparseIntArray mItemLayoutId = new SparseIntArray();
     protected OnItemClickListener mOnItemClickListener;
     protected OnItemLongClickListener mOnItemLongClickListener;
     private boolean mItemClickable = true;
 
-    public CommonRecyclerAdapter(@NonNull List<T> data, @LayoutRes int... itemLayoutIds) {
+    public CommonRecyclerAdapter(@NonNull List<T> data) {
         mData = data;
-        for (int itemLayoutId : itemLayoutIds) {
-            mItemLayoutId.put(itemLayoutId, itemLayoutId);
-        }
     }
 
     @NonNull
     @Override
-    public CommonRecyclerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        try {
-            view = LayoutInflater.from(parent.getContext()).inflate(mItemLayoutId.get(viewType), parent, false);
-        } catch (NullPointerException | Resources.NotFoundException e) {
-            view = new View(parent.getContext());
-        }
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(getItemLayout(viewType), parent, false);
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);
-        return new CommonRecyclerHolder(view);
+        return getItemViewHolder(view, viewType);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CommonRecyclerHolder holder, final int position) {
-        holder.itemView.setTag(holder.itemView.getId(), position);
-        convert(holder, position, mData.get(position));
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return mItemLayoutId.keyAt(0);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        ((CommonRecyclerHolder) holder).convert(position, mData.get(position));
     }
 
     @Override
@@ -84,19 +39,12 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
         return mData == null ? 0 : mData.size();
     }
 
-    protected abstract void convert(@NonNull CommonRecyclerHolder holder, int position, @Nullable T item);
+    @LayoutRes
+    protected abstract int getItemLayout(int viewType);
 
-    public void setItemClickable(boolean itemClickable) {
-        this.mItemClickable = itemClickable;
-    }
+    protected abstract CommonRecyclerHolder<T> getItemViewHolder(View itemVIew, int viewType);
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
-    }
 
-    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
-        this.mOnItemLongClickListener = onItemLongClickListener;
-    }
 
     @Override
     public void onClick(View v) {
@@ -113,6 +61,19 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
         return true;
     }
 
+
+    public void setItemClickable(boolean itemClickable) {
+        this.mItemClickable = itemClickable;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        this.mOnItemLongClickListener = onItemLongClickListener;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
@@ -121,4 +82,31 @@ public abstract class CommonRecyclerAdapter<T> extends RecyclerView.Adapter<Comm
         void onItemLongClick(View view, int position);
     }
 
+
+    public static abstract class DebounceOnItemClickListener implements OnItemClickListener {
+        private static final long DEFAULT_DELAY_INTERVAL = 300L;
+        private long lastClickTime = 0;
+
+        private final long delayInterval;
+
+
+        public DebounceOnItemClickListener() {
+            this(DEFAULT_DELAY_INTERVAL);
+        }
+
+        public DebounceOnItemClickListener(long delayInterval) {
+            this.delayInterval = delayInterval;
+        }
+
+        @Override
+        public void onItemClick(View v, int position) {
+            if (System.currentTimeMillis() - lastClickTime > delayInterval) {
+                doItemClick(v, position);
+            }
+            lastClickTime = System.currentTimeMillis();
+        }
+
+        public abstract void doItemClick(View v, int position);
+
+    }
 }

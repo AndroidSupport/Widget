@@ -5,8 +5,8 @@ import android.view.View;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
-import com.uniquext.android.recycleview.core.CommonRecyclerAdapter;
-import com.uniquext.android.recycleview.core.CommonRecyclerHolder;
+import com.uniquext.android.recycleview.core.old.CommonRecyclerAdapter;
+import com.uniquext.android.recycleview.core.old.CommonRecyclerHolder;
 
 import java.util.HashSet;
 import java.util.List;

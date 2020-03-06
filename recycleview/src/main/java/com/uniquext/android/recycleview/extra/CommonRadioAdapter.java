@@ -2,8 +2,8 @@ package com.uniquext.android.recycleview.extra;
 
 import androidx.annotation.NonNull;
 
-import com.uniquext.android.recycleview.core.CommonRecyclerAdapter;
-import com.uniquext.android.recycleview.core.CommonRecyclerHolder;
+import com.uniquext.android.recycleview.core.old.CommonRecyclerAdapter;
+import com.uniquext.android.recycleview.core.old.CommonRecyclerHolder;
 
 import java.util.List;
 

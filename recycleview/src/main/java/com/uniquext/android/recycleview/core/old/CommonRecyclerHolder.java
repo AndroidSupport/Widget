@@ -1,4 +1,4 @@
-package com.uniquext.android.recycleview.core;
+package com.uniquext.android.recycleview.core.old;
 
 import android.graphics.drawable.Drawable;
 import android.util.SparseArray;
@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @version 1.0
  * @date 2018/12/7  15:50
  */
-public abstract class CommonRecyclerHolder<T> extends RecyclerView.ViewHolder {
+public class CommonRecyclerHolder extends RecyclerView.ViewHolder {
 
     /**
      * 控件集
@@ -42,10 +41,6 @@ public abstract class CommonRecyclerHolder<T> extends RecyclerView.ViewHolder {
 
     public CommonRecyclerHolder(View itemView) {
         super(itemView);
-    }
-
-    public void setVisibility(@IdRes int id, boolean visibility) {
-        getView(id).setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     public void setVisibility(@IdRes int id, int visibility) {
@@ -122,8 +117,5 @@ public abstract class CommonRecyclerHolder<T> extends RecyclerView.ViewHolder {
         }
         return (T) view;
     }
-
-
-    protected abstract void convert(int position, T item);
 
 }
