@@ -16,5 +16,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+    <com.uniquext.widget.loopplayer.TextSwitchView
+        android:id="@+id/switcher"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        app:contentArray="@array/FunFact"
+        app:contentSize="20sp"
+        app:contentColor="@color/colorPrimary"
+        app:period="2000"
+        android:layout_height="wrap_content"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
