@@ -1,19 +1,23 @@
-apply plugin: 'com.android.library'
 apply from: 'maven_push.gradle'
 
-static def getProductName() {
-    return "widget"
+def releaseTime = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+08:00"))
+
+
+if (debugging.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
 }
 
-static def releaseTime() {
-    return new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+08:00"))
-}
 
 android {
     compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion 21
+        if (debugging.toBoolean()) {
+            applicationId "com.uniquext.android.widget"
+        }
+        minSdkVersion 14
         targetSdkVersion 29
         versionCode 3
         versionName "1.0.2"
@@ -22,16 +26,35 @@ android {
 
     }
 
+    sourceSets {
+        main {
+            if (debugging.toBoolean()) {
+                manifest.srcFile 'src/debug/AndroidManifest.xml'
+                java.srcDir 'src/debug/java'
+                resources.srcDirs 'src/debug/res', 'src/main/res'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java.srcDir 'src/main/java'
+                resources.srcDir 'src/main/res'
+            }
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        libraryVariants.all { variant ->
-            variant.outputs.all {
-                outputFileName = "${getProductName()}_v${defaultConfig.versionName}_${releaseTime()}.aar"
+
+        if (!debugging.toBoolean()) {
+            libraryVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "${PROJECT_NAME}_v${defaultConfig.versionName}_${releaseTime}.aar"
+                }
             }
         }
+
     }
 
     compileOptions {
@@ -42,5 +65,6 @@ android {
 }
 
 dependencies {
-    compileOnly 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
 }

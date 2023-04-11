@@ -1,4 +1,4 @@
-package com.uniquext.android.widget;
+package com.uniquext.android.widget.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

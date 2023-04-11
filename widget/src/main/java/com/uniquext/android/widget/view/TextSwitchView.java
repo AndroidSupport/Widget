@@ -1,4 +1,4 @@
-package com.uniquext.widget.loopplayer;
+package com.uniquext.android.widget.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -15,6 +15,8 @@ import android.widget.ViewSwitcher;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.uniquext.android.widget.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
